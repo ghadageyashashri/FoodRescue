@@ -1,0 +1,418 @@
+{
+  "info": {
+    "name": "FoodRescue REST API Collection",
+    "_postman_id": "foodrescue-mern-api-2026",
+    "description": "Complete Postman collection for FoodRescue: Intelligent Food Waste Reduction and Donation Platform. Covers Authentication, Donations CRUD, NGO Requests, Volunteer Logistics, Admin Governance, Notifications, and Aggregated Analytics.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "donationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "requestId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pickupId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "orgId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login - Donor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"donor@grandhotel.com\",\n  \"password\": \"Donor@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - NGO",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"contact@feedhope.org\",\n  \"password\": \"Ngo@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - Volunteer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alex.volunteer@gmail.com\",\n  \"password\": \"Volunteer@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@foodrescue.org\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Register New Donor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Bistro & Cafe\",\n  \"email\": \"bistro@citydining.com\",\n  \"password\": \"Bistro@123\",\n  \"phone\": \"+1 555-0999\",\n  \"role\": \"donor\",\n  \"address\": \"12 Market St, Central Plaza\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Register New NGO",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sarah Miller\",\n  \"email\": \"sarah@caremeals.org\",\n  \"password\": \"Care@123\",\n  \"phone\": \"+1 555-0777\",\n  \"role\": \"ngo\",\n  \"address\": \"40 Hope Way\",\n  \"organizationName\": \"Care Meals Community Kitchen\",\n  \"registrationNumber\": \"NGO-REG-2026-99\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Get Authenticated Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Donations",
+      "item": [
+        {
+          "name": "Create Food Donation (Donor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"foodName\": \"Freshly Cooked Veg Pulao & Curry\",\n  \"description\": \"Banquet surplus, untouched and packed in hygienic insulated containers.\",\n  \"category\": \"cooked_meals\",\n  \"quantity\": 40,\n  \"unit\": \"meals\",\n  \"isVegetarian\": true,\n  \"preparationDate\": \"2026-10-25T18:00:00.000Z\",\n  \"useByDate\": \"2026-10-26T12:00:00.000Z\",\n  \"storageConditions\": \"hot_holding\",\n  \"pickupAddress\": \"Grand Palace Kitchen Loading Bay 2, 742 Evergreen Terrace\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/donations", "host": ["{{baseUrl}}"], "path": ["donations"] }
+          }
+        },
+        {
+          "name": "Get All Donations (Public / Filtered)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/donations?status=AVAILABLE", "host": ["{{baseUrl}}"], "path": ["donations"], "query": [{ "key": "status", "value": "AVAILABLE" }] }
+          }
+        },
+        {
+          "name": "Get Donation By ID & Track History",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}"] }
+          }
+        },
+        {
+          "name": "Update Eligible Donation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 45,\n  \"description\": \"Updated quantity: 45 meals in thermoboxes.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}"] }
+          }
+        },
+        {
+          "name": "Cancel Donation (Donor/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Cancelled due to emergency schedule change.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}/cancel", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Donation Requests & Distribution",
+      "item": [
+        {
+          "name": "Request Available Donation (NGO)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestedQuantity\": 40,\n  \"notes\": \"Required for tonight's community shelter hot meal service.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}/request", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}", "request"] }
+          }
+        },
+        {
+          "name": "Get My Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/requests/my", "host": ["{{baseUrl}}"], "path": ["requests", "my"] }
+          }
+        },
+        {
+          "name": "Accept Request (Donor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"responseNotes\": \"Request accepted! Please dispatch volunteer for pickup.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/requests/{{requestId}}/accept", "host": ["{{baseUrl}}"], "path": ["requests", "{{requestId}}", "accept"] }
+          }
+        },
+        {
+          "name": "Cancel Request (NGO)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/requests/{{requestId}}/cancel", "host": ["{{baseUrl}}"], "path": ["requests", "{{requestId}}", "cancel"] }
+          }
+        },
+        {
+          "name": "Confirm Food Receipt (NGO)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}/receive", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}", "receive"] }
+          }
+        },
+        {
+          "name": "Record Distribution & Impact (NGO)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"peopleServed\": 40,\n  \"notes\": \"Hot dinner distributed to shelter residents.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/donations/{{donationId}}/distribute", "host": ["{{baseUrl}}"], "path": ["donations", "{{donationId}}", "distribute"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Volunteer Logistics",
+      "item": [
+        {
+          "name": "Claim Pickup Task (Volunteer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donationId\": \"{{donationId}}\",\n  \"pickupNotes\": \"En route with insulated delivery boxes.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pickups", "host": ["{{baseUrl}}"], "path": ["pickups"] }
+          }
+        },
+        {
+          "name": "Get Available Deliveries",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/pickups/available", "host": ["{{baseUrl}}"], "path": ["pickups", "available"] }
+          }
+        },
+        {
+          "name": "Get Volunteer Assigned Pickups",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/pickups/my", "host": ["{{baseUrl}}"], "path": ["pickups", "my"] }
+          }
+        },
+        {
+          "name": "Confirm Food Picked Up",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PICKED_UP\",\n  \"notes\": \"Food verified hot and loaded safely into vehicle.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pickups/{{pickupId}}/status", "host": ["{{baseUrl}}"], "path": ["pickups", "{{pickupId}}", "status"] }
+          }
+        },
+        {
+          "name": "Confirm Delivery to NGO",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DELIVERED\",\n  \"notes\": \"Safely handed over to NGO kitchen manager.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pickups/{{pickupId}}/status", "host": ["{{baseUrl}}"], "path": ["pickups", "{{pickupId}}", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Administrator Governance",
+      "item": [
+        {
+          "name": "Admin Overview Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/overview", "host": ["{{baseUrl}}"], "path": ["admin", "overview"] }
+          }
+        },
+        {
+          "name": "Get Registered Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Toggle User Account Status (Suspend/Activate)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountStatus\": \"active\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/status", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "status"] }
+          }
+        },
+        {
+          "name": "Get All NGO Organizations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/organizations", "host": ["{{baseUrl}}"], "path": ["admin", "organizations"] }
+          }
+        },
+        {
+          "name": "Approve / Reject NGO Verification",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verificationStatus\": \"verified\",\n  \"verificationNotes\": \"Audited registration certificate and health safety standards.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/admin/organizations/{{orgId}}/verify", "host": ["{{baseUrl}}"], "path": ["admin", "organizations", "{{orgId}}", "verify"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Notifications & Analytics",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications", "host": ["{{baseUrl}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "Mark All Notifications Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/notifications/all/read", "host": ["{{baseUrl}}"], "path": ["notifications", "all", "read"] }
+          }
+        },
+        {
+          "name": "Platform Public Impact Analytics",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/analytics/overview", "host": ["{{baseUrl}}"], "path": ["analytics", "overview"] }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+# Render Blueprint for FoodRescue
+# Full-Stack MERN Platform Deployment
+# See docs: https://render.com/docs/blueprint-spec
+
+services:
+  # -------------------------------------------------------------
+  # 1. Backend Web Service (Node.js + Express REST API)
+  # -------------------------------------------------------------
+  - type: web
+    name: foodrescue-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false # Set your MongoDB Atlas connection string in the Render Dashboard
+      - key: JWT_SECRET
+        generateValue: true # Render will automatically generate a secure random secret
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: foodrescue-frontend
+          property: host
+
+  # -------------------------------------------------------------
+  # 2. Frontend Static Site (ReactJS Vite SPA on Global CDN)
+  # -------------------------------------------------------------
+  - type: web
+    name: foodrescue-frontend
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: foodrescue-backend
+          property: host
