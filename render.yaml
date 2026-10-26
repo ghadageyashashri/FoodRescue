@@ -17,19 +17,12 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 5000
       - key: MONGODB_URI
         sync: false # Set your MongoDB Atlas connection string in the Render Dashboard
       - key: JWT_SECRET
         generateValue: true # Render will automatically generate a secure random secret
       - key: JWT_EXPIRES_IN
         value: 7d
-      - key: CLIENT_URL
-        fromService:
-          type: web
-          name: foodrescue-frontend
-          property: host
 
   # -------------------------------------------------------------
   # 2. Frontend Static Site (ReactJS Vite SPA on Global CDN)
@@ -49,4 +42,4 @@ services:
         fromService:
           type: web
           name: foodrescue-backend
-          property: host
+          envVarKey: RENDER_EXTERNAL_URL

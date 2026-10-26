@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/foodrescue');
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/foodrescue';
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 8000,
+    });
     console.log(`[MongoDB] Connected: ${conn.connection.host}/${conn.connection.name}`);
+    return conn;
   } catch (error) {
     console.error(`[MongoDB Error] Failed to connect: ${error.message}`);
-    process.exit(1);
+    throw error;
   }
 };
 
